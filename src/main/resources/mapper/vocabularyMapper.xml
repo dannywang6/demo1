@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exercise.mapper.VocabularyMapper">
+
+    <select id="selectAll"
+            resultType="Vocabulary">
+        SELECT
+        id,
+        kana,
+        kanji,
+        romaji,
+        meaning,
+        english,
+        example,
+        note,
+        created_at,
+        updated_at,
+        important
+        FROM vocabulary
+    </select>
+
+    <select id="search" resultType="Vocabulary">
+        SELECT
+        id,
+        kana,
+        kanji,
+        romaji,
+        meaning,
+        english,
+        example,
+        note,
+        created_at,
+        updated_at,
+        important
+        FROM vocabulary
+        WHERE meaning LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <insert id="insert" parameterType="Vocabulary">
+        INSERT INTO vocabulary (
+        kana,
+        kanji,
+        romaji,
+        meaning,
+        english,
+        example,
+        note,
+        important,
+        created_at,
+        updated_at
+        )
+        VALUES (
+        #{kana},
+        #{kanji},
+        #{romaji},
+        #{meaning},
+        #{english},
+        #{example},
+        #{note},
+        #{important},
+        NOW(),
+        NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="Vocabulary">
+    UPDATE vocabulary
+    SET
+        kana = #{kana},
+        kanji = #{kanji},
+        romaji = #{romaji},
+        meaning = #{meaning},
+        english = #{english},
+        example = #{example},
+        note = #{note},
+        important = #{important},
+        updated_at = NOW()
+    WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM vocabulary
+        WHERE id = #{id}
+    </delete>
+
+    <select id="searchById"
+            parameterType="long"
+            resultType="Vocabulary">
+        SELECT
+        id,
+        kana,
+        kanji,
+        romaji,
+        meaning,
+        english,
+        example,
+        note,
+        created_at,
+        updated_at,
+        important
+        FROM vocabulary
+        WHERE id = #{id}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM vocabulary
+    </select>
+
+    <select id="selectPage" resultType="Vocabulary">
+        SELECT * FROM vocabulary
+        LIMIT #{offset}, #{size}
+    </select>
+
+</mapper>
